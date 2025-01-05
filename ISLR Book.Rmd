@@ -1,6 +1,8 @@
 ---
 title: "ISLBook"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2025-01-05"
 ---
 
@@ -8,11 +10,7 @@ date: "2025-01-05"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Chapter 2
 
 ```{r Chapter 2.3.1}
 #ctrl + shift + enter runs the entire chunk 
@@ -38,6 +36,7 @@ cor(x,y)
 set.seed(1303) #recreates a set "randomness"
 rnorm(50) #now follows a certain output
 ```
+
 ```{r 2.3.2}
 jpeg("plot.jpeg") # start a jpg saving process
 plot(x, y, xlab = "label for x", ylab = "label for y", main = "title label", col = "purple")
@@ -73,12 +72,87 @@ x[0] #R code is not zero indexed
  A[c(1, 3), c(2, 4)] # includes 1,2 1,4 3,2 3,4, kind of like distributive property
  A[c(1,3),] #rows 1 and 3
  A[-c(1, 3), ] # rows not 1 or 3
+ dim(A)
+ library(ISLR2)
+ # Auto <-read.table("Auto.data") if this is a file
+ View(Auto) # opens up the df page
+ head(Auto) # first few rows
+ na.omit(Auto) #df.dropna
+ names(Auto)
+ # Auto <-read.table("Auto.data", header = T, na.strings = "?", stringsAsFactors = T)
+ #^^^header makes the first line of file the variable names, every string with "?" becomes NA, asFactor turns strings into unique number identifiers kind of like a map key pair(efficient storage, but can't change string)
+ plot(Auto$mpg, Auto$weight)
+ attach(Auto)
+ hist(mpg, col = 2)
+ cylinders <- as.factor(cylinders)
+ plot(cylinders, mpg, col = "red", varwidth = T, horizontal = T) # creates a boxplot when an axis is qualitative
+ pairs(Auto)
+ pairs(~ mpg + displacement + horsepower + weight + acceleration, data = Auto) #creates these specific pairs
+ windows() # creates an interactive window to be able to use the identify fuction and click on points
+ plot(horsepower, mpg)
+ identify(horsepower, mpg, name)
 
-
- 
 
 ```
 
+## 2.4 Exercises
 
+### *Conceptual*
 
+1.  For each of parts (a) through (d), indicate whether we would generally expect the performance of a flexible statistical learning method to be better or worse than an inflexible method. Justify your answer.
 
+    (a) The sample size n is extremely large, and the number of predictors p is small.
+
+        [*Flexible is better. Because the large sample size will help reduce risk of over-fitting and reduce variance, and the small p will minimize effects of high dimensions and create a better, more detailed model*]{style="color: red"}
+
+    (b) The number of predictors p is extremely large, and the number of observations n is small. [*Inflexible is better. Because the small sample size and large p will cause the flexible method to suffer from over-fitting and would try too hard to form patterns from coincidence. Inflexible models are able to reduce noise and risk of over-fitting by assuming a linear relation.*]{style="color: red"}
+
+    (c) The relationship between the predictors and response is highly non-linear. [*Flexible is better. Because an inflexible method would be off unable to capture the non-linearity.*]{style="color: red"}
+
+    (d) The variance of the error terms, i.e. σ2 = Var(ϵ), is extremely high. [*Inflexible is better. Because we aim to reduce the Mean Square Error and if we go with a flexible method, the error would be even higher.*]{style="color: red"}
+
+<!-- -->
+
+2.  Explain whether each scenario is a classification or regression problem, and indicate whether we are most interested in inference or pre diction. Finally, provide n and p.
+
+    (a) We collect a set of data on the top 500 firms in the US. For each firm we record profit, number of employees, industry and the CEO salary. We are interested in understanding which factors affect CEO salary. 
+    [*We are not interested in quantitative measurements. We are interested in classification with respect to the factors that affect ceo salaries. This is an inference with n = 500, p = 4. *]{style="color: red"}
+
+    (b) We are considering launching a new product and wish to know whether it will be a success or a failure. We collect data on 20 similar products that were previously launched. For each product we have recorded whether it was a success or failure, price charged for the product, marketing budget, competition price, and ten other variables.
+    [*This is a classification and prediction with respects to the success/failure of the product with n = 20, p = 14.*]{style="color: red"}
+
+    (c) We are interested in predicting the % change in the USD/Euro exchange rate in relation to the weekly changes in the world stock markets. Hence we collect weekly data for all of 2012. For each week we record the % change in the USD/Euro, the % change in the US market, the % change in the British market, and the % change in the German market.
+    [*This is a regression/prediction problem as we wish to know the %change of the stock market with n = 52, p = 4.*]{style="color: red"}
+
+<!-- -->
+
+3.  We now revisit the bias-variance decomposition.
+
+<!-- -->
+
+(a) Provide a sketch of typical (squared) bias, variance, training er ror, test error, and Bayes (or irreducible) error curves, on a sin gle plot, as we go from less flexible statistical learning methods towards more flexible approaches. The x-axis should represent the amount of flexibility in the method, and the y-axis should represent the values for each curve. There should be five curves. Make sure to label each one.
+(b) Explain why each of the five curves has the shape displayed in part (a).
+
+<!-- -->
+
+4.  You will now think of some real-life applications for statistical learn ing.
+
+<!-- -->
+
+(a) Describe three real-life applications in which classification might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.
+(b) Describe three real-life applications in which regression might be useful. Describe the response, as well as the predictors. Is the goal of each application inference or prediction? Explain your answer.
+(c) Describe three real-life applications in which cluster analysis might be useful.
+
+<!-- -->
+
+5.  What are the advantages and disadvantages of a very flexible (versus a less flexible) approach for regression or classification? Under what 54
+6.  Statistical Learning circumstances might a more flexible approach be preferred to a less f lexible approach? When might a less flexible approach be preferred?
+7.  Describe the differences between a parametric and a non-parametric statistical learning approach. What are the advantages of a para metric approach to regression or classification (as opposed to a non parametric approach)? What are its disadvantages?
+8.  The table below provides a training data set containing six observa tions, three predictors, and one qualitative response variable. Obs. X1 X2 X3 Y 1 0 3 0 Red 2 2 0 0 Red 3 0 1 3 Red 4 0 1 2 Green 5 −1 0 1 Green 6 1 1 1 Red Suppose we wish to use this data set to make a prediction for Y when X1 =X2 =X3 =0using K-nearest neighbors.
+
+<!-- -->
+
+(a) Compute the Euclidean distance between each observation and the test point, X1 = X2 = X3 =0.
+(b) What is our prediction with K =1? Why?
+(c) What is our prediction with K =3? Why?
+(d) If the Bayes decision boundary in this problem is highly non linear, then would we expect the best value for K to be large or small? Why?
