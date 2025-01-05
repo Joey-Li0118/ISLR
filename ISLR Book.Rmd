@@ -1,0 +1,84 @@
+---
+title: "ISLBook"
+output: html_document
+date: "2025-01-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r Chapter 2.3.1}
+#ctrl + shift + enter runs the entire chunk 
+#ctrl + enter runs the current line
+
+y <- 25325
+x <- c(1,2,3,4) #creating a vector
+y <- c(5,6,7,8) 
+length(x) #lists length of variable 
+length(y)
+ls() # lists all variables that are saved
+rm(x, y) #clears the variables
+rm(list = ls()) #clears all variables
+
+
+matrix <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE) #byrow is adding and wrapping matrix[0, :]
+print(matrix)
+
+x <- rnorm(50) # creates 50 random vectors with default mean 0 and standard deviation 1
+y <- x+ rnorm(50, 50, .1)
+cor(x,y)
+
+set.seed(1303) #recreates a set "randomness"
+rnorm(50) #now follows a certain output
+```
+```{r 2.3.2}
+jpeg("plot.jpeg") # start a jpg saving process
+plot(x, y, xlab = "label for x", ylab = "label for y", main = "title label", col = "purple")
+dev.off() #stops the jpg recording process
+
+pdf("plot.pdf") # starts a pdf saving process of all plots
+#note requires running the full chunk of the code to save the plot
+plot(x, y, xlab = "label for x", ylab = "label for y", main = "title label", col = "blue")
+plot(x, y, xlab = "label for x", ylab = "label for y", main = "title label", col = "red")
+plot(x, y, xlab = "label for x", ylab = "label for y", main = "title label", col = "green")
+dev.off()
+dev.list()
+
+
+x <-seq(-pi, pi, length = 50) #creates 50 evenly spaced 
+x[0] #R code is not zero indexed
+
+ y <- x
+ f <-outer(x, y, function(x, y) cos(y) / (1 + x^2))
+ contour(x, y, f) 
+ contour(x, y, f, nlevels = 20, add = T) # creates a contour map with lines labeled, adds to the previous contour
+ fa <- (f-t(f)) / 2
+ image(x, y, fa) #creates a heat map
+ persp(x, y, fa, theta = 60, phi = 0) #creates the 3d model graph, and can change perspectives using theta and phi
+ 
+ #Indexing
+ A <- matrix(1:16, 4, 4) 
+ A[2,3] #rows, then col
+ A[1:3] #rows 1 through 3rd col
+ A[1:3, ] #rows 1-3 and all cols
+ A[,1:3] #cols 1-3 and all rows
+ A[2:3, 1:3] #row 2-3, columns 1-3
+ A[c(1, 3), c(2, 4)] # includes 1,2 1,4 3,2 3,4, kind of like distributive property
+ A[c(1,3),] #rows 1 and 3
+ A[-c(1, 3), ] # rows not 1 or 3
+
+
+ 
+
+```
+
+
+
+
