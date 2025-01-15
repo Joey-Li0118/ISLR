@@ -266,6 +266,7 @@ Now you should see that the first data column is Private. Note that another colu
 <!-- -->
 
 i.  Use the summary() function to produce a numerical summary of the variables in the data set.
+
 ```{r}
 summary(college)
 ```
@@ -277,6 +278,7 @@ summary(college)
 <!-- -->
 
 ii. Use the pairs() function to produce a scatterplot matrix of the first ten columns or variables of the data. Recall that you can reference the first ten columns of a matrix A using A[,1:10].
+
 ```{r}
 View(college)
 college$Private <- ifelse(college$Private == "Yes", 1, 0)
@@ -284,11 +286,13 @@ pairs(college[,1:10])
 ```
 
 iii. Use the plot() function to produce side-by-side boxplots of Outstate versus Private.
+
 ```{r}
 
 plot(as.factor(college$Private), college$Outstate, col = "pink", xlab = "Private", ylab = "Outstate", main = "Outstate vs Private")
 
 ```
+
 iv. Create a new qualitative variable, called Elite,by binning the Top10 perc variable. We are going to divide universities into two groups based on whether or not the proportion of students coming from the top 10% of their high school classes exceeds 50%. \> Elite \<-rep("No", nrow(college)) \> Elite[college\$Top10perc \> 50] \<-"Yes" \> Elite \<-as.factor(Elite) \> college \<-data.frame(college, Elite) Use the summary() function to see how many elite univer sities there are. Now use the plot() function to produce side-by-side boxplots of Outstate versus Elite.
 
 ```{r}
@@ -300,8 +304,9 @@ college <-data.frame(college, Elite) #adds the vector into the dataframe
 ```
 
 v.  Use the hist() function to produce some histograms with differing numbers of bins for a few of the quantitative variables. You may find the command par(mfrow = c(2, 2)) useful: it will divide the print window into four regions so that four plots can be made simultaneously. Modifying the arguments to this function will divide the screen in other ways.
+
 ```{r}
-par(mfrow = c(2, 2))
+par(mfrow = c(2, 2)) #able to graph 4 at once in a 2x2 grid
 hist(college$Apps, col = "red")
 hist(college$PhD, col = "green")
 hist(college$Top10perc, col = "skyblue")
@@ -316,12 +321,65 @@ vi. Continue exploring the data, and provide a brief summary of what you discove
 
 <!-- -->
 
-(a) Which of the predictors are quantitative, and which are quali tative?
-(b) What is the range of each quantitative predictor? You can an swer this using the range() function.
+(a) Which of the predictors are quantitative, and which are qualitative?
+
+```{r}
+library(ISLR2)
+sapply(Auto, class) #sapply is a function that can apply the function to all variables
+#sapply(Dataframe, Function)
+
+```
+
+[*Qualitative: name* ]{style="color: red"}
+
+[*Quantitative: acceleration, weight, horsepower, displacement, mpg, cylinders, year, origin* ]{style="color: red"}
+
+(b) What is the range of each quantitative predictor? You can answer this using the range() function.
+```{r}
+quantitative <- Auto[, sapply(Auto, is.numeric)]
+range <- sapply(quantitative, range) 
+print(range)
+```
+
 (c) What is the mean and standard deviation of each quantitative predictor?
+```{r}
+quantitative <- Auto[, sapply(Auto, is.numeric)]
+mean <- sapply(quantitative, mean) 
+std <- sapply(quantitative, sd)
+print(mean)
+print(std)
+```
+
 (d) Now remove the 10th through 85th observations. What is the range, mean, and standard deviation of each predictor in the subset of the data that remains?
-(e) Using the full data set, investigate the predictors graphically, using scatterplots or other tools of your choice. Create some plots highlighting the relationships among the predictors. Comment on your findings. range() 2.4 Exercises 57
+```{r}
+removed <- quantitative[-c(10:85), ]
+removedrange <- sapply(removed, range) 
+removedmean <- sapply(removed, mean) 
+removedstd <- sapply(removed, sd) 
+print(removedrange)
+print(removedstd)
+print(removedstd)
+```
+(e) Using the full data set, investigate the predictors graphically, using scatterplots or other tools of your choice. Create some plots highlighting the relationships among the predictors. Comment on your findings. 
+
+```{r}
+print(pairs(Auto, col = "blue")) #The variable for the x-axis is the variable represented by the column of the pair plot grid, and the variable for the y-axis is the variable represented by the row of the pair plot grid.
+
+#example mpg(column) is x axis, displacement(row) is y axis
+
+library(GGally)
+ggpairs(quantitative, lower = list(continuous = wrap("smooth", color = "blue")), upper = list(continuous = "cor"), diag = list(continuous = wrap("densityDiag", fill = "blue", color = "black")))
+
+```
+
+[*Negative Relationships: mpg/displacement, mpg/horsepower, mpg/cylinders, mpg/weight* ]{style="color: red"}
+[*Positive Relationships: mpg/year, cylinders/displacement, cylinders/horsepower, cylinders/weight  *]{style="color: red"}
+[*No Relationships/Unable to Form a Relation based on graph: all names, mpg/origin and more....* ]{style="color: red"} 
+
+
+
 (f) Suppose that we wish to predict gas mileage (mpg) on the basis of the other variables. Do your plots suggest that any of the other variables might be useful in predicting mpg? Justify your answer.
+[*Variable with strong correlations with mpg are weight, horsepower, cylinders, displacement* ]{style="color: red"} 
 
 <!-- -->
 
